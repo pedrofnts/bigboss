@@ -2,6 +2,7 @@ import { config } from "./config/config";
 import express from "express";
 import http from "http";
 import mongoose from "mongoose";
+import Logging from "./library/Logging";
 
 const router = express();
 
@@ -10,8 +11,8 @@ const router = express();
 mongoose
   .connect(config.mongo.url, { retryWrites: true, w: "majority" })
   .then(() => {
-    console.log("Conectado");
+    Logging.info("Conectado ao mongoDB");
   })
   .catch((error) => {
-    console.log(error);
+    Logging.info(error);
   });
