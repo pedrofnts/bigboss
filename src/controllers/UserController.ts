@@ -3,13 +3,17 @@ import mongoose from "mongoose";
 import User from "../models/User";
 import bcrypt from "bcrypt";
 
-const createUser = (req: Request, res: Response, next: NextFunction) => {
+const createUser = async (req: Request, res: Response, next: NextFunction) => {
   const { name, email, password, address } = req.body;
+
+  const userExists = await User.findOne({ email });
+  if (userExists) {
+    return res.status(409).json({ message: "Usuário já cadastrado" });
+  }
 
   const hashPassword = bcrypt.hashSync(password, 10);
 
   const user = new User({
-    _id: new mongoose.Types.ObjectId(),
     name,
     email,
     password: hashPassword,
@@ -18,7 +22,10 @@ const createUser = (req: Request, res: Response, next: NextFunction) => {
 
   return user
     .save()
-    .then((user) => res.status(201).json({ user }))
+    .then((user: any) => {
+      user.password = undefined;
+      return res.status(201).json({ user });
+    })
     .catch((error) => res.status(500).json({ error }));
 };
 const readUser = (req: Request, res: Response, next: NextFunction) => {
