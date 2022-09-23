@@ -46,9 +46,9 @@ const readAll = (req: Request, res: Response, next: NextFunction) => {
     .catch((error) => res.status(500).json({ error }));
 };
 const updateUser = (req: Request, res: Response, next: NextFunction) => {
-  const userId = req.params.userId;
+  const user = req;
 
-  return User.findById(userId)
+  return User.findOne(user)
     .then((user) => {
       if (user) {
         user.set(req.body);
@@ -65,9 +65,9 @@ const updateUser = (req: Request, res: Response, next: NextFunction) => {
 };
 
 const deleteUser = (req: Request, res: Response, next: NextFunction) => {
-  const userId = req.params.userId;
+  const user = req;
 
-  return User.findByIdAndDelete(userId)
+  return User.findOneAndDelete(user)
     .then((user) =>
       user
         ? res.status(201).json({ message: "Usuário excluído" })

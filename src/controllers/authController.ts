@@ -28,4 +28,17 @@ const login = (req: Request, res: Response, next: NextFunction) => {
     .catch((error) => res.status(500).json({ error, status: "error" }));
 };
 
-export default { login };
+const getProfile = (req: Request, res: Response, next: NextFunction) => {
+  const { user } = req;
+
+  return User.findOne(user)
+    .select("-password")
+    .then((user) =>
+      user
+        ? res.status(200).json({ user })
+        : res.status(404).json({ message: "Usuário não encontrado" })
+    )
+    .catch((error) => res.status(500).json({ error }));
+};
+
+export default { login, getProfile };
