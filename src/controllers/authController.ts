@@ -29,16 +29,9 @@ const login = (req: Request, res: Response, next: NextFunction) => {
 };
 
 const getProfile = (req: Request, res: Response, next: NextFunction) => {
-  const { user } = req;
+  const user = req.user;
 
-  return User.findOne(user)
-    .select("-password")
-    .then((user) =>
-      user
-        ? res.status(200).json({ user })
-        : res.status(404).json({ message: "Usuário não encontrado" })
-    )
-    .catch((error) => res.status(500).json({ error }));
+  res.status(200).send(user._doc);
 };
 
 export default { login, getProfile };
