@@ -4,7 +4,7 @@ import User from "../models/User";
 import bcrypt from "bcrypt";
 
 const createUser = async (req: Request, res: Response, next: NextFunction) => {
-  const { name, email, password, address } = req.body;
+  const { name, nickname, email, password, address, role } = req.body;
 
   const userExists = await User.findOne({ email });
   if (userExists) {
@@ -15,9 +15,11 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
 
   const user = new User({
     name,
+    nickname,
     email,
     password: hashPassword,
     address,
+    role
   });
 
   return user
