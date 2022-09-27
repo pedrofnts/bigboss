@@ -22,7 +22,7 @@ const createPost = async (req: Request, res: Response, next: NextFunction) => {
 
     await post.save();
   } catch (error) {
-    return res.status(400).json({ message: "post not created" });
+    return res.status(400).json({ message: "O post não pôde ser criado" });
   }
 };
 const readPost = (req: Request, res: Response, next: NextFunction) => {
