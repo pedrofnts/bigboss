@@ -3,28 +3,27 @@ import mongoose from "mongoose";
 import User from "../models/User";
 import Post from "../models/Post";
 import bcrypt from "bcrypt";
-import { PostCategory } from "../enumerators/PostEnum";
+import { PostCategory, IPostCategory } from "../enumerators/PostEnum";
 
 const createPost = async (req: Request, res: Response, next: NextFunction) => {
-  const { category, album, year, title, description, assets } = req.body;
-  const { _doc: user } = req.user;
+  try {
+    const { category, album, year, title, description, assets } = req.body;
+    const user = req.user;
 
-  const post = new Post({
-    category: Object.keys(PostCategory).includes(category) ? category : null,
-    album,
-    year,
-    title,
-    description,
-    assets,
-    user: user._id,
-  });
+    const post = new Post({
+      category,
+      album,
+      year,
+      title,
+      description,
+      assets,
+      user: user._id,
+    });
 
-  post
-    .save()
-    .then((post: any) => {
-      return res.status(201).json({ post });
-    })
-    .catch((error) => res.status(500).json({ error }));
+    await post.save();
+  } catch (error) {
+    return res.status(400).json({ message: "post not created" });
+  }
 };
 const readPost = (req: Request, res: Response, next: NextFunction) => {
   const postId = req.params.postId;
