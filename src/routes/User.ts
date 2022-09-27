@@ -19,16 +19,11 @@ router.post(
 router.get("/profile/:userId", authMiddleware, controller.readUser);
 router.get("/profiles", authMiddleware, controller.readAll);
 router.put(
-  "/profile/edit",
+  "/profile",
   authMiddleware,
   validateSchema(Schemas.user.update),
   controller.updateUser
 );
-router.delete(
-  "/profile/delete",
-  authMiddleware,
-  checkRole,
-  controller.deleteUser
-);
+router.delete("/profile", authMiddleware, checkRole, controller.deleteUser);
 
 export = router;
