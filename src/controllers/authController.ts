@@ -1,14 +1,14 @@
 import { NextFunction, Request, Response } from "express";
-import mongoose from "mongoose";
 import User from "../models/User";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 const login = (req: Request, res: Response, next: NextFunction) => {
+  
   const { email, password } = req.body;
 
-  const user = User.findOne({ email })
-    .then((user) => {
+  User.findOne({ email })
+    .then((user: any) => {
       if (user) {
         const passwordIsValid = bcrypt.compareSync(password, user.password);
 
@@ -25,7 +25,17 @@ const login = (req: Request, res: Response, next: NextFunction) => {
         res.status(404).send("Usuário não encontrado");
       }
     })
-    .catch((error) => res.status(500).json({ error, status: "error" }));
+    .catch((error: unknown) => {
+
+      let message
+      if (error instanceof Error) {
+        message = error.message
+      } else {
+        message = error
+      }
+
+      return res.status(500).json({ message })
+    });
 };
 
 const getProfile = (req: Request, res: Response, next: NextFunction) => {

@@ -65,6 +65,7 @@ export const Schemas = {
         country: Joi.string().valid("Brasil").required(),
       }).required(),
     }),
+
     update: Joi.object<IUser>({
       name: Joi.string().required(),
       nickname: Joi.string().alphanum().min(3).max(10).required(),
@@ -82,6 +83,7 @@ export const Schemas = {
       }),
     }),
   },
+
   post: {
     create: Joi.object<IPost>({
       category: Joi.string()
@@ -96,6 +98,7 @@ export const Schemas = {
         want: Joi.array().items(Joi.string().min(1).max(6)).required(),
       }).required(),
     }),
+    
     update: Joi.object<IPost>({
       category: Joi.string().required(),
       album: Joi.string().required(),
