@@ -31,7 +31,7 @@ const login = (req: Request, res: Response, next: NextFunction) => {
 const getProfile = (req: Request, res: Response, next: NextFunction) => {
   const user = req.user;
 
-  res.status(200).send(user._doc);
+  res.status(200).send(user);
 };
 
 export default { login, getProfile };

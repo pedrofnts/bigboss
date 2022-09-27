@@ -1,10 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import User from "../models/User";
-
-type JwtPayload = {
+interface JwtPayload {
   id: number;
-};
+}
 
 export const authMiddleware = async (
   req: Request,
@@ -22,13 +21,14 @@ export const authMiddleware = async (
   const { id } = jwt.verify(token, process.env.JWT_PASS ?? "") as JwtPayload;
 
   const user = await User.findById(id);
+
   if (!user) {
     return res.status(401).send({ auth: false, message: "Não autorizado" });
   }
 
-  const { password: _, ...userWithoutPassword } = user;
+  const { _id, name, nickname, email, address } = user;
 
-  req.user = userWithoutPassword;
+  req.user = { _id, name, nickname, email, address };
 
   next();
 };
