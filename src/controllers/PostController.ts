@@ -1,11 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import mongoose from "mongoose";
-import User from "../models/User";
 import Post from "../models/Post";
-import bcrypt from "bcrypt";
-import { PostCategory, IPostCategory } from "../enumerators/PostEnum";
 
-const createPost = async (req: Request, res: Response, next: NextFunction) => {
+const createPost = async (req: Request, res: Response) => {
   try {
     const { category, album, year, title, description, assets } = req.body;
     const user = req.user;
@@ -21,11 +17,18 @@ const createPost = async (req: Request, res: Response, next: NextFunction) => {
     });
 
     await post.save();
-  } catch (error) {
-    return res.status(400).json({ message: "O post não pôde ser criado" });
+  } catch (error: unknown) {
+    let message
+    if (error instanceof Error) {
+      message = error.message
+    } else {
+      message = error
+    }
+    return res.status(400).json({ message: "O post não pôde ser criado" })
   }
 };
-const readPost = (req: Request, res: Response, next: NextFunction) => {
+
+const readPost = (req: Request, res: Response) => {
   const postId = req.params.postId;
 
   return Post.findById(postId)
@@ -35,13 +38,34 @@ const readPost = (req: Request, res: Response, next: NextFunction) => {
         ? res.status(200).json({ post })
         : res.status(404).json({ message: "Post não encontrado" })
     )
-    .catch((error) => res.status(500).json({ error }));
+    .catch((error: unknown) => {
+
+      let message
+      if (error instanceof Error) {
+        message = error.message
+      } else {
+        message = error
+      }
+      return res.status(500).json({ message })
+    
+    });
 };
-const readAllPosts = (req: Request, res: Response, next: NextFunction) => {
+
+const readAllPosts = (req: Request, res: Response) => {
   return Post.find()
     .populate("user", "name nickname address.city address.state")
-    .then((posts) => res.status(200).json({ posts }))
-    .catch((error) => res.status(500).json({ error }));
+    .then(posts => res.status(200).json({ posts }))
+    .catch((error: unknown) => {
+
+      let message
+      if (error instanceof Error) {
+        message = error.message
+      } else {
+        message = error
+      }
+      return res.status(401).json({ message })
+
+    });
 };
 
 export default { createPost, readPost, readAllPosts };
