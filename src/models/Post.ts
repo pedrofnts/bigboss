@@ -1,4 +1,4 @@
-import mongoose, { Document, Schema } from "mongoose";
+import mongoose, { Document, Schema } from 'mongoose';
 
 export interface IPost {
   category: string;
@@ -18,16 +18,16 @@ export interface IAssets {
 export interface IPostModel extends IPost, Document {}
 
 const PostSchema: Schema = new Schema(
-  {
-    category: { type: String, required: true },
-    album: { type: String, required: true },
-    year: { type: Number, required: true },
-    title: { type: String, required: true },
-    description: { type: String },
-    assets: { type: Object, required: true },
-    user: { type: Schema.Types.ObjectId, required: true, ref: "User" },
-  },
-  { versionKey: false, timestamps: true }
+    {
+        category: { type: String, required: true },
+        album: { type: String, required: true },
+        year: { type: Number, required: true },
+        title: { type: String, required: true },
+        description: { type: String },
+        assets: { type: Object, required: true },
+        user: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
+    },
+    { versionKey: false, timestamps: true }
 );
 
-export default mongoose.model<IPostModel>("Post", PostSchema);
+export default mongoose.model<IPostModel>('Post', PostSchema);
