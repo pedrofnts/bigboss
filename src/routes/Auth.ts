@@ -1,14 +1,13 @@
-import express from "express";
-import { collapseTextChangeRangesAcrossMultipleVersions } from "typescript";
-import controller from "../controllers/authController";
-import { authMiddleware } from "../middlewares/auth";
+import express from 'express';
+import AuthController from '../controllers/authController';
+import { authMiddleware } from '../middlewares/auth';
 
 const router = express.Router();
 
 // Não autenticada
 
-router.post("/login", controller.login); // Login de usuário
+router.post('/login', AuthController.login); // Login de usuário
 
-router.get("/profile", authMiddleware, controller.getProfile);
+router.get('/profile', authMiddleware, AuthController.getProfile);
 
 export = router;

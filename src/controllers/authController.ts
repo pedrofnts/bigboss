@@ -1,47 +1,51 @@
-import { NextFunction, Request, Response } from "express";
-import User from "../models/User";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+import { Request, Response } from 'express';
+import User, { IUser } from '../models/User';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import userModel from '../models/User';
 
-const login = (req: Request, res: Response, next: NextFunction) => {
-  
-  const { email, password } = req.body;
+export default class AuthController {
 
-  User.findOne({ email })
-    .then((user: any) => {
-      if (user) {
-        const passwordIsValid = bcrypt.compareSync(password, user.password);
+    static login (req: Request, res: Response) {
 
-        if (passwordIsValid) {
-          const token = jwt.sign({ id: user._id }, process.env.JWT_PASS ?? "", {
-            expiresIn: 86400,
-          });
+        const { email, password } = req.body;
 
-          res.status(200).send({ auth: true, token });
-        } else {
-          res.status(401).send({ auth: false, token: null });
-        }
-      } else {
-        res.status(404).send("Usuário não encontrado");
-      }
-    })
-    .catch((error: unknown) => {
+        User.findOne({ email })
+            .then((user) => {
+                if (user) {
+                    const passwordIsValid = bcrypt.compareSync(password, user.password);
 
-      let message
-      if (error instanceof Error) {
-        message = error.message
-      } else {
-        message = error
-      }
+                    if (passwordIsValid) {
+                        const token = jwt.sign({ id: user._id }, process.env.JWT_PASS ?? '', {
+                            expiresIn: 86400,
+                        });
 
-      return res.status(500).json({ message })
-    });
-};
+                        res.status(200).send({ auth: true, token });
+                    } else {
+                        res.status(401).send({ auth: false, token: null });
+                    }
+                } else {
+                    res.status(404).send('Usuário não encontrado');
+                }
+            })
+            .catch((error: unknown) => {
 
-const getProfile = (req: Request, res: Response, next: NextFunction) => {
-  const user = req.user;
+                let message;
+                if (error instanceof Error) {
+                    message = error.message;
+                } else {
+                    message = error;
+                }
 
-  res.status(200).send(user);
-};
+                return res.status(500).json({ message });
+            });
+    }
 
-export default { login, getProfile };
+    static getProfile (req: Request, res: Response) {
+        const user = req.user;
+
+        res.status(200).send(user);
+    }
+
+}
+
