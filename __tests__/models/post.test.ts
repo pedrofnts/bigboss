@@ -18,11 +18,14 @@ describe('User Model Testing', () => {
     const postInput: IPost = {
         category: faker.commerce.department(),
         album: faker.commerce.productMaterial(),
-        year: '2015',
+        year: 2015,
         title: faker.commerce.productName(),
         description: faker.commerce.productDescription(),
-        assets: 'troca',
-        author
+        assets: {
+            offer: ['fra008, fra010'],
+            want: ['ale007']
+        },
+        user: faker.database.mongodbObjectId(),
     };
 
     const post = new postModel({ ...postInput });
@@ -33,53 +36,59 @@ describe('User Model Testing', () => {
         const createPost = await post.save();
 
         expect(createPost).toBeDefined();
-        expect(createPost.category).toBe(user.name);
-        expect(createPost.album).toBe(user.nickname);
-        expect(createPost.year).toBe(user.email);
-        expect(createPost.title).toBe(user.password);
-        expect(createPost.description).toBe(user.role);
-        expect(createPost.assets).toStrictEqual(user.address);
+        expect(createPost.category).toBe(post.category);
+        expect(createPost.album).toBe(post.album);
+        expect(createPost.year).toBe(post.year);
+        expect(createPost.title).toBe(post.title);
+        expect(createPost.description).toBe(post.description);
+        expect(createPost.assets).toStrictEqual(post.assets);
     });
 
-    it('Should get a user by id', async () => {
+    it('Should get a post by id', async () => {
 
-        await user.save();
-        const fetchedUser = await userModel.findOne({ _id: user._id });
+        await post.save();
+        const fetchedPost = await postModel.findOne({ _id: post._id })
 
-        expect(fetchedUser).toBeDefined();
-        expect(fetchedUser).toMatchObject(userInput);
+        expect(fetchedPost).toBeDefined();
+        expect(fetchedPost).toMatchObject(postInput);
+    });
+
+    it('Should get all posts', async () => {
+        await post.save();
+
+        const posts = await postModel.find();
+
+        expect(posts).toBeDefined();
     });
 
 
-    it('Should update user', async () => {
-        const userUpdated: IUser = {
-            name: faker.name.firstName(),
-            nickname: faker.name.suffix(),
-            email: faker.internet.email(),
-            password: faker.internet.password(),
-            role: 'user',
-            address: {
-                street: faker.address.street(),
-                number: faker.random.numeric(),
-                city: faker.address.cityName(),
-                state: faker.address.stateAbbr(),
-                country: faker.address.countryCode()
-            }
-        };
+    // it('Should update user', async () => {
+    //     const postUpdated: IPost = {
+    //         category: faker.commerce.department(),
+    //         album: faker.commerce.productMaterial(),
+    //         year: 2018,
+    //         title: faker.commerce.productName(),
+    //         description: faker.commerce.productDescription(),
+    //         assets: {
+    //             offer: ['bra007, fra010'],
+    //             want: ['ira009']
+    //         },
+    //         user: faker.database.mongodbObjectId()
+    //     };
 
-        await userModel.updateOne({ _id: user._id }, { ...userUpdated });
-        const fecthedUser = await userModel.findOne({ _id: user._id });
+    //     await postModel.updateOne({ _id: post._id }, { ...postUpdated });
+    //     const fecthedPost = await postModel.findOne({ _id: post._id });
 
-        expect(fecthedUser).toBeDefined();
-        expect(fecthedUser).toMatchObject(userUpdated);
-        expect(fecthedUser).not.toMatchObject(userInput);
-    });
+    //     expect(fecthedPost).toBeDefined();
+    //     expect(fecthedPost).toMatchObject(postUpdated);
+    //     expect(fecthedPost).not.toMatchObject(postInput);
+    // });
 
-    it('Should delete user', async () => {
-        await userModel.deleteOne({ _id: user._id });
+    // it('Should delete post', async () => {
+    //     await postModel.deleteOne({ _id: post._id });
 
-        const fetchedUser = await userModel.findOne({ _id: user._id });
+    //     const fetchedUser = await postModel.findOne({ _id: post._id });
 
-        expect(fetchedUser).toBeNull();
-    });
+    //     expect(fetchedUser).toBeNull();
+    // });
 });

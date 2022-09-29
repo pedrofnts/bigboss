@@ -23,6 +23,7 @@ export default class PostController {
             await post.save();
 
             return res.status(201).json(post);
+            
         } catch (error: unknown) {
             let message;
             if (error instanceof Error) {

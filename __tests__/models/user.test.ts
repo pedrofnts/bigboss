@@ -46,6 +46,14 @@ describe('User Model Testing', () => {
         expect(createUser.address).toStrictEqual(user.address);
     });
 
+    it('Should get all users' , async() => {
+        await user.save();
+
+        const users = await userModel.find();
+
+        expect(users).toBeDefined();
+    });
+
     it('Should get a user by id', async () => {
 
         await user.save();

@@ -1,4 +1,4 @@
-import mongoose, { Document, Schema, Types } from 'mongoose';
+import mongoose, { Document, ObjectId, Schema, Types } from 'mongoose';
 import { IUser } from './User';
 
 export interface IPost {
@@ -8,7 +8,7 @@ export interface IPost {
   title: string;
   description: string;
   assets: IAssets;
-  user: IUser;
+  user: ObjectId | string;
 }
 
 export interface IAssets {
@@ -17,6 +17,7 @@ export interface IAssets {
 }
 
 export interface PostDocument extends IPost, Document {
+  _doc: { [x: string]: any; }
   updatedAt: Date;
   createdAt: Date;
 }
