@@ -17,7 +17,7 @@ export interface IAssets {
 }
 
 export interface PostDocument extends IPost, Document {
-  _doc: { [x: string]: any; }
+  _doc: { [x: string]: any; password: any;}
   updatedAt: Date;
   createdAt: Date;
 }

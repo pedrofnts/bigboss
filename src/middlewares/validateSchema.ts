@@ -70,7 +70,9 @@ export const Schemas = {
             name: Joi.string().required(),
             nickname: Joi.string().alphanum().min(3).max(10).required(),
             email: Joi.string().email().required(),
-            password: Joi.string().required(),
+            password: Joi.string()
+                .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$'))
+                .required(),
             role: Joi.string().valid('user').required(),
             address: Joi.object({
                 street: Joi.string().required(),
@@ -98,7 +100,7 @@ export const Schemas = {
                 want: Joi.array().items(Joi.string().min(1).max(6)).required(),
             }).required(),
         }),
-    
+
         update: Joi.object<IPost>({
             category: Joi.string().required(),
             album: Joi.string().required(),
