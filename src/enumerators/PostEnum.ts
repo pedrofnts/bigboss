@@ -1,3 +1,3 @@
-export const PostCategory = ["Esportes", "Entretenimento"];
+export const PostCategory = ['Esportes', 'Entretenimento'];
 
-export type IPostCategory = "Esportes" | "Entretenimento" | "Anime" | "Série";
+export type IPostCategory = 'Esportes' | 'Entretenimento' | 'Anime' | 'Série';

@@ -1,29 +1,34 @@
-import { validateSchema, Schemas } from "./../middlewares/validateSchema";
-import express from "express";
-import controller from "../controllers/UserController";
-import { authMiddleware } from "../middlewares/auth";
-import { checkRole } from "../middlewares/checkRole";
+import { validateSchema, Schemas } from './../middlewares/validateSchema';
+import express from 'express';
+import UserController from '../controllers/UserController';
+import { authMiddleware } from '../middlewares/auth';
+import { checkRole } from '../middlewares/checkRole';
 
 const router = express.Router();
 
 // Não autenticada
 
 router.post(
-  "/register",
-  validateSchema(Schemas.user.create),
-  controller.createUser
+    '/user',
+    validateSchema(Schemas.user.create),
+    UserController.createUser
 ); // Cadastro de Usuário
 
 // Com autenticação
 
-router.get("/profile/:userId", authMiddleware, controller.readUser);
-router.get("/profiles", authMiddleware, controller.readAll);
+router.get('/users/:userId', authMiddleware, UserController.getUserById);
+router.get('/users', authMiddleware, UserController.getAllUsers);
 router.put(
-  "/profile",
-  authMiddleware,
-  validateSchema(Schemas.user.update),
-  controller.updateUser
+    '/user',
+    authMiddleware,
+    validateSchema(Schemas.user.update),
+    UserController.updateUser
 );
-router.delete("/profile", authMiddleware, checkRole, controller.deleteUser);
+router.delete(
+    '/user',
+    authMiddleware,
+    checkRole,
+    UserController.deleteUser
+);
 
 export = router;
