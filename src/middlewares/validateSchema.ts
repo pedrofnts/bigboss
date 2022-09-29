@@ -66,52 +66,51 @@ export const Schemas = {
             }).required(),
         }),
 
-<<<<<<< HEAD
-    update: Joi.object<IUser>({
-      name: Joi.string().required(),
-      nickname: Joi.string().alphanum().min(3).max(10).required(),
-      email: Joi.string().email().required(),
-      password: Joi.string()
-        .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))
-        .required(),
-      role: Joi.string().valid("user").required(),
-      address: Joi.object({
-        street: Joi.string().required(),
-        number: Joi.number().required(),
-        city: Joi.string().required(),
-        state: Joi.string()
-          .valid(...UFs)
-          .required(),
-        country: Joi.string().valid("Brasil").required(),
-      }),
-    }),
-  },
+        update: Joi.object<IUser>({
+            name: Joi.string().required(),
+            nickname: Joi.string().alphanum().min(3).max(10).required(),
+            email: Joi.string().email().required(),
+            password: Joi.string()
+                .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$'))
+                .required(),
+            role: Joi.string().valid('user').required(),
+            address: Joi.object({
+                street: Joi.string().required(),
+                number: Joi.number().required(),
+                city: Joi.string().required(),
+                state: Joi.string()
+                    .valid(...UFs)
+                    .required(),
+                country: Joi.string().valid('Brasil').required(),
+            }),
+        }),
+    },
 
-  post: {
-    create: Joi.object<IPost>({
-      category: Joi.string()
-        .valid("Esportes", "Filmes e Séries", "Desenhos Animados")
-        .required(),
-      album: Joi.string().required(),
-      year: Joi.number().required(),
-      title: Joi.string().required(),
-      description: Joi.string().required(),
-      assets: Joi.object({
-        offer: Joi.array().items(Joi.string().min(1).max(6)).required(),
-        want: Joi.array().items(Joi.string().min(1).max(6)).required(),
-      }).required(),
-    }),
+    post: {
+        create: Joi.object<IPost>({
+            category: Joi.string()
+                .valid('Esportes', 'Filmes e Séries', 'Desenhos Animados')
+                .required(),
+            album: Joi.string().required(),
+            year: Joi.number().required(),
+            title: Joi.string().required(),
+            description: Joi.string().required(),
+            assets: Joi.object({
+                offer: Joi.array().items(Joi.string().min(1).max(6)).required(),
+                want: Joi.array().items(Joi.string().min(1).max(6)).required(),
+            }).required(),
+        }),
 
-    update: Joi.object<IPost>({
-      category: Joi.string().required(),
-      album: Joi.string().required(),
-      year: Joi.number().required(),
-      title: Joi.string().required(),
-      description: Joi.string().required(),
-      assets: Joi.object({
-        offer: Joi.array().items(Joi.string()).required(),
-        want: Joi.array().items(Joi.string()).required(),
-      }).required(),
-    }),
-  },
+        update: Joi.object<IPost>({
+            category: Joi.string().required(),
+            album: Joi.string().required(),
+            year: Joi.number().required(),
+            title: Joi.string().required(),
+            description: Joi.string().required(),
+            assets: Joi.object({
+                offer: Joi.array().items(Joi.string()).required(),
+                want: Joi.array().items(Joi.string()).required(),
+            }).required(),
+        }),
+    },
 };

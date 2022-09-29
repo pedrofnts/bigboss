@@ -93,7 +93,7 @@ export default class UserController {
     
                     return user
                         .save()
-                        .then((user) => res.status(201).json({ user }))
+                        .then((user) => res.status(204).json({ user }))
                         .catch((error) => {
     
                             let message;
