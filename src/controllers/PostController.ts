@@ -19,8 +19,6 @@ export default class PostController {
                 user: user._id,
             });
 
-            console.log(post);
-
             await post.save();
 
             return res.status(201).json(post);
@@ -83,7 +81,7 @@ export default class PostController {
         try {
             const postToUpdate = await Post.findOne(post);
 
-            if(!postToUpdate) {
+            if (!postToUpdate) {
                 throw new Error;
             }
 
@@ -91,6 +89,28 @@ export default class PostController {
             const postUpdated = await postToUpdate.save();
 
             return res.status(204).json(postUpdated);
+
+        } catch (error: unknown) {
+            let message;
+            if (error instanceof Error) {
+                message = error.message;
+            } else {
+                message = error;
+            }
+            return res.status(500).json({ message });
+        }
+    }
+
+    static async deletePost(req: Request, res: Response) {
+        const post = req;
+
+        try {
+
+            Post.findOneAndDelete({ post }, function (err: unknown) {
+                if(err) throw new Error;
+
+                return res.status(201).json({message: 'Post excluído'});
+            });
 
         } catch (error: unknown) {
             let message;

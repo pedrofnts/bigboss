@@ -18,5 +18,10 @@ router.post(
 router.get('/post/:postId', authMiddleware, PostController.readPost);
 router.get('/feed', authMiddleware, PostController.readAllPosts);
 router.put('/post/:postId', authMiddleware, PostController.updatePosts);
+router.delete(
+    '/post',
+    authMiddleware,
+    PostController.deletePost
+);
 
 export = router;
