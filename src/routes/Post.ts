@@ -16,6 +16,6 @@ router.post(
     PostController.createPost
 );
 router.get('/post/:postId', authMiddleware, PostController.readPost);
-router.get('/feed/', authMiddleware, PostController.readAllPosts);
+router.get('/feed', authMiddleware, PostController.readAllPosts);
 
 export = router;

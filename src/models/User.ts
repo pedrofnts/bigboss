@@ -1,7 +1,6 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
-export interface IUser extends Document {
-  _doc: { [x: string]: any; password: any; };
+export interface IUser {
   name: string;
   nickname: string;
   email: string;
@@ -18,7 +17,13 @@ export interface IAddress {
   country: string;
 }
 
-const UserSchema: Schema = new Schema(
+export interface UserDocument extends IUser, Document {
+  _doc: { [x: string]: any; password: any; }
+  updatedAt: Date;
+  createdAt: Date;
+}
+
+const UserSchema = new Schema<UserDocument>(
     {
         name: { type: String, required: true },
         nickname: { type: String, required: true },
@@ -27,7 +32,11 @@ const UserSchema: Schema = new Schema(
         role: { type: String, default: 'USER' },
         address: { type: Object, required: true },
     },
-    { versionKey: false }
+    {
+        versionKey: false,
+        timestamps: true,
+    }
 );
 
-export default mongoose.model<IUser>('User', UserSchema);
+const userModel = mongoose.model('User', UserSchema);
+export default userModel;

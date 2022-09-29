@@ -1,13 +1,14 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import mongoose, { Document, Schema, Types } from 'mongoose';
+import { IUser } from './User';
 
 export interface IPost {
   category: string;
   album: string;
-  year: string;
+  year: number;
   title: string;
   description: string;
-  assets: string;
-  author: string;
+  assets: IAssets;
+  user: IUser;
 }
 
 export interface IAssets {
@@ -15,9 +16,12 @@ export interface IAssets {
   want: Array<string>;
 }
 
-export interface IPostModel extends IPost, Document {}
+export interface PostDocument extends IPost, Document {
+  updatedAt: Date;
+  createdAt: Date;
+}
 
-const PostSchema: Schema = new Schema(
+const PostSchema: Schema = new Schema<PostDocument>(
     {
         category: { type: String, required: true },
         album: { type: String, required: true },
@@ -30,4 +34,5 @@ const PostSchema: Schema = new Schema(
     { versionKey: false, timestamps: true }
 );
 
-export default mongoose.model<IPostModel>('Post', PostSchema);
+const postModel = mongoose.model('Post', PostSchema);
+export default postModel;

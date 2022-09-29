@@ -1,11 +1,11 @@
-import { IUser } from './../models/User';
+import userModel, { IUser, UserDocument } from './../models/User';
 import { Request, Response } from 'express';
 import User from '../models/User';
 import bcrypt from 'bcrypt';
 
 export default class UserController {
 
-    static createUser = async (req: Request, res: Response) => {
+    static async createUser (req: Request, res: Response)  {
 
         const { name, nickname, email, password, address, role } = req.body;
     
@@ -27,10 +27,9 @@ export default class UserController {
     
         return user
             .save()
-            .then((user: IUser) => {
-    
-                const { password, ...userWithoutPassword } = user._doc;
-                return res.status(201).json({ userWithoutPassword });
+            .then((user) => {
+                const { password, ...userCreated } = user._doc;
+                return res.status(201).json({ userCreated });
             })
             .catch((error: unknown) => {
     
@@ -43,9 +42,9 @@ export default class UserController {
     
                 res.status(500).json({ message });
             });
-    };
+    }
     
-    static readUser = (req: Request, res: Response) => {
+    static getUserById (req: Request, res: Response) {
         const userId = req.params.userId;
     
         return User.findById(userId)
@@ -65,9 +64,9 @@ export default class UserController {
     
                 return res.status(500).json({ message });
             });
-    };
+    }
     
-    static readAll = (req: Request, res: Response) => {
+    static getAllUsers (req: Request, res: Response) {
         return User.find()
             .select('-password')
             .then(users => res.status(200).json({ users }))
@@ -82,9 +81,9 @@ export default class UserController {
     
                 return res.status(500).json({ message });
             });
-    };
+    }
     
-    static updateUser = (req: Request, res: Response) => {
+    static updateUser (req: Request, res: Response) {
         const user = req;
     
         return User.findOne(user)
@@ -123,9 +122,9 @@ export default class UserController {
                 return res.status(500).json({ message });
     
             });
-    };
+    }
     
-    static deleteUser = (req: Request, res: Response) => {
+    static deleteUser (req: Request, res: Response) {
         const user = req;
     
         return User.findOneAndDelete(user)
@@ -145,7 +144,7 @@ export default class UserController {
     
                 return res.status(500).json({ message });
             });
-    };
+    }
 
 }
 

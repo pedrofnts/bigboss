@@ -8,16 +8,20 @@ import routes from './routes';
 const app = express();
 
 /** Connect to Mongo */
-mongoose
-    .connect(config.mongo.url, { retryWrites: true, w: 'majority' })
-    .then(() => {
-        Logging.info('Mongo connected successfully.');
-        StartServer();
-    })
-    .catch((error) => Logging.error(error));
+const server = () => {
+    mongoose
+        .connect(config.mongo.url, { retryWrites: true, w: 'majority' })
+        .then(() => {
+            Logging.info('Mongo connected successfully.');
+            StartServer();
+        })
+        .catch((error) => Logging.error(error));
+};
+
+server();
 
 /** Only Start Server if Mongoose Connects */
-const StartServer = () => {
+export const StartServer = () => {
     /** Log the request */
     app.use((req, res, next) => {
         /** Log the req */
@@ -62,12 +66,12 @@ const StartServer = () => {
     app.use('/', routes);
 
     /** Healthcheck */
-    app.get('/ping', (req, res, next) =>
+    app.get('/ping', (_, res) =>
         res.status(200).json({ hello: 'world' })
     );
 
     /** Error handling */
-    app.use((req, res, next) => {
+    app.use((_, res) => {
         const error = new Error('Not found');
 
         Logging.error(error);
@@ -78,13 +82,10 @@ const StartServer = () => {
     });
 
     http
-        .createServer(app);
-
-    
+        .createServer(app)
+        .listen(config.server.port, () =>
+            Logging.info(`Server is running on port ${config.server.port}`)
+        );
 };
 
-app.listen(config.server.port, () =>
-    Logging.info(`Server is running on port ${config.server.port}`)
-);
-
-export default app;
+export default server;

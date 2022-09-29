@@ -2,15 +2,16 @@ import { Request, Response } from 'express';
 import User, { IUser } from '../models/User';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import userModel from '../models/User';
 
 export default class AuthController {
 
-    static login = (req: Request, res: Response) => {
+    static login (req: Request, res: Response) {
 
         const { email, password } = req.body;
 
         User.findOne({ email })
-            .then((user: IUser | null) => {
+            .then((user) => {
                 if (user) {
                     const passwordIsValid = bcrypt.compareSync(password, user.password);
 
@@ -38,13 +39,13 @@ export default class AuthController {
 
                 return res.status(500).json({ message });
             });
-    };
+    }
 
-    static getProfile = (req: Request, res: Response) => {
+    static getProfile (req: Request, res: Response) {
         const user = req.user;
 
         res.status(200).send(user);
-    };
+    }
 
 }
 

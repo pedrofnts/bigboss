@@ -16,8 +16,8 @@ router.post(
 
 // Com autenticação
 
-router.get('/users/:userId', authMiddleware, UserController.readUser);
-router.get('/users', authMiddleware, UserController.readAll);
+router.get('/users/:userId', authMiddleware, UserController.getUserById);
+router.get('/users', authMiddleware, UserController.getAllUsers);
 router.put(
     '/user',
     authMiddleware,
