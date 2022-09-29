@@ -3,11 +3,9 @@ import http from 'http';
 import mongoose from 'mongoose';
 import { config } from './config/config';
 import Logging from './library/Logging';
-import userRoutes from './routes/User';
-import authRoutes from './routes/Auth';
-import postRoutes from './routes/Post';
+import routes from './routes';
 
-const router = express();
+const app = express();
 
 /** Connect to Mongo */
 mongoose
@@ -21,8 +19,8 @@ mongoose
 /** Only Start Server if Mongoose Connects */
 const StartServer = () => {
     /** Log the request */
-    router.use((req, res, next) => {
-    /** Log the req */
+    app.use((req, res, next) => {
+        /** Log the req */
         Logging.info(
             `Incomming - METHOD: [${req.method}] - URL: [${req.url}] - IP: [${req.socket.remoteAddress}]`
         );
@@ -37,11 +35,11 @@ const StartServer = () => {
         next();
     });
 
-    router.use(express.urlencoded({ extended: true }));
-    router.use(express.json());
+    app.use(express.urlencoded({ extended: true }));
+    app.use(express.json());
 
     /** API Rules */
-    router.use((req, res, next) => {
+    app.use((req, res, next) => {
         res.header('Access-Control-Allow-Origin', '*');
         res.header(
             'Access-Control-Allow-Headers',
@@ -61,17 +59,15 @@ const StartServer = () => {
 
     /** Routes */
 
-    router.use('/', userRoutes);
-    router.use('/', authRoutes);
-    router.use('/', postRoutes);
+    app.use('/', routes);
 
     /** Healthcheck */
-    router.get('/ping', (req, res, next) =>
+    app.get('/ping', (req, res, next) =>
         res.status(200).json({ hello: 'world' })
     );
 
     /** Error handling */
-    router.use((req, res, next) => {
+    app.use((req, res, next) => {
         const error = new Error('Not found');
 
         Logging.error(error);
@@ -82,8 +78,13 @@ const StartServer = () => {
     });
 
     http
-        .createServer(router)
-        .listen(config.server.port, () =>
-            Logging.info(`Server is running on port ${config.server.port}`)
-        );
+        .createServer(app);
+
+    
 };
+
+app.listen(config.server.port, () =>
+    Logging.info(`Server is running on port ${config.server.port}`)
+);
+
+export default app;

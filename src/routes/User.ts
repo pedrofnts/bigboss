@@ -1,6 +1,6 @@
 import { validateSchema, Schemas } from './../middlewares/validateSchema';
 import express from 'express';
-import controller from '../controllers/UserController';
+import UserController from '../controllers/UserController';
 import { authMiddleware } from '../middlewares/auth';
 import { checkRole } from '../middlewares/checkRole';
 
@@ -9,26 +9,26 @@ const router = express.Router();
 // Não autenticada
 
 router.post(
-    '/register',
+    '/user',
     validateSchema(Schemas.user.create),
-    controller.createUser
+    UserController.createUser
 ); // Cadastro de Usuário
 
 // Com autenticação
 
-router.get('/profile/:userId', authMiddleware, controller.readUser);
-router.get('/profiles', authMiddleware, controller.readAll);
+router.get('/users/:userId', authMiddleware, UserController.readUser);
+router.get('/users', authMiddleware, UserController.readAll);
 router.put(
-    '/profile/edit',
+    '/user',
     authMiddleware,
     validateSchema(Schemas.user.update),
-    controller.updateUser
+    UserController.updateUser
 );
 router.delete(
-    '/profile/delete',
+    '/user',
     authMiddleware,
     checkRole,
-    controller.deleteUser
+    UserController.deleteUser
 );
 
 export = router;

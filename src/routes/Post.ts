@@ -1,7 +1,7 @@
 import { Schema } from 'mongoose';
 import { validateSchema, Schemas } from './../middlewares/validateSchema';
 import express from 'express';
-import controller from '../controllers/PostController';
+import PostController from '../controllers/PostController';
 import { authMiddleware } from '../middlewares/auth';
 import { checkRole } from '../middlewares/checkRole';
 
@@ -13,9 +13,9 @@ router.post(
     '/post',
     authMiddleware,
     validateSchema(Schemas.post.create),
-    controller.createPost
+    PostController.createPost
 );
-router.get('/post/:postId', authMiddleware, controller.readPost);
-router.get('/feed/', authMiddleware, controller.readAllPosts);
+router.get('/post/:postId', authMiddleware, PostController.readPost);
+router.get('/feed/', authMiddleware, PostController.readAllPosts);
 
 export = router;

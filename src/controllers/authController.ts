@@ -1,47 +1,50 @@
-import { NextFunction, Request, Response } from 'express';
-import User from '../models/User';
+import { Request, Response } from 'express';
+import User, { IUser } from '../models/User';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-const login = (req: Request, res: Response, next: NextFunction) => {
-  
-    const { email, password } = req.body;
+export default class AuthController {
 
-    User.findOne({ email })
-        .then((user: any) => {
-            if (user) {
-                const passwordIsValid = bcrypt.compareSync(password, user.password);
+    static login = (req: Request, res: Response) => {
 
-                if (passwordIsValid) {
-                    const token = jwt.sign({ id: user._id }, process.env.JWT_PASS ?? '', {
-                        expiresIn: 86400,
-                    });
+        const { email, password } = req.body;
 
-                    res.status(200).send({ auth: true, token });
+        User.findOne({ email })
+            .then((user: IUser | null) => {
+                if (user) {
+                    const passwordIsValid = bcrypt.compareSync(password, user.password);
+
+                    if (passwordIsValid) {
+                        const token = jwt.sign({ id: user._id }, process.env.JWT_PASS ?? '', {
+                            expiresIn: 86400,
+                        });
+
+                        res.status(200).send({ auth: true, token });
+                    } else {
+                        res.status(401).send({ auth: false, token: null });
+                    }
                 } else {
-                    res.status(401).send({ auth: false, token: null });
+                    res.status(404).send('Usuário não encontrado');
                 }
-            } else {
-                res.status(404).send('Usuário não encontrado');
-            }
-        })
-        .catch((error: unknown) => {
+            })
+            .catch((error: unknown) => {
 
-            let message;
-            if (error instanceof Error) {
-                message = error.message;
-            } else {
-                message = error;
-            }
+                let message;
+                if (error instanceof Error) {
+                    message = error.message;
+                } else {
+                    message = error;
+                }
 
-            return res.status(500).json({ message });
-        });
-};
+                return res.status(500).json({ message });
+            });
+    };
 
-const getProfile = (req: Request, res: Response, next: NextFunction) => {
-    const user = req.user;
+    static getProfile = (req: Request, res: Response) => {
+        const user = req.user;
 
-    res.status(200).send(user);
-};
+        res.status(200).send(user);
+    };
 
-export default { login, getProfile };
+}
+
