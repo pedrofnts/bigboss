@@ -1,8 +1,8 @@
-import userModel, { UserDocument, IUser } from './../../src/models/User';
+import userModel, { IUser } from './../../src/models/User';
 import {
     connectDBForTesting,
     disconnectDBForTesting,
-} from '../db';
+} from '../../db';
 import { faker } from '@faker-js/faker';
 
 describe('User Model Testing', () => {
@@ -58,7 +58,7 @@ describe('User Model Testing', () => {
 
         await user.save();
         const fetchedUser = await userModel.findOne({ _id: user._id });
-
+        
         expect(fetchedUser).toBeDefined();
         expect(fetchedUser).toMatchObject(userInput);
     });
@@ -82,7 +82,7 @@ describe('User Model Testing', () => {
 
         await userModel.updateOne({_id: user._id}, {...userUpdated});
         const fecthedUser = await userModel.findOne({ _id: user._id });
-
+      
         expect(fecthedUser).toBeDefined();
         expect(fecthedUser).toMatchObject(userUpdated);
         expect(fecthedUser).not.toMatchObject(userInput);

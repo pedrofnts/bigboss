@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import postModel from '../models/Post';
 import Post from '../models/Post';
 
 export default class PostController {

@@ -1,5 +1,4 @@
-import mongoose, { Document, ObjectId, Schema, Types } from 'mongoose';
-import { IUser } from './User';
+import mongoose, { Document, ObjectId, Schema } from 'mongoose';
 
 export interface IPost {
   category: string;
@@ -17,7 +16,7 @@ export interface IAssets {
 }
 
 export interface PostDocument extends IPost, Document {
-  _doc: { [x: string]: any; password: any;}
+  _doc: { [x: string]: unknown; password: unknown; };
   updatedAt: Date;
   createdAt: Date;
 }
@@ -32,7 +31,10 @@ const PostSchema: Schema = new Schema<PostDocument>(
         assets: { type: Object, required: true },
         user: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
     },
-    { versionKey: false, timestamps: true }
+    { 
+        versionKey: false, 
+        timestamps: true 
+    }
 );
 
 const postModel = mongoose.model('Post', PostSchema);

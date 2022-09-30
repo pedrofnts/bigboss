@@ -18,7 +18,7 @@ export interface IAddress {
 }
 
 export interface UserDocument extends IUser, Document {
-  _doc: { [x: string]: any; password: any; }
+  _doc: { [x: string]: unknown; password: unknown; }
   updatedAt: Date;
   createdAt: Date;
 }

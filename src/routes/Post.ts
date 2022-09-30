@@ -1,9 +1,7 @@
-import { Schema } from 'mongoose';
 import { validateSchema, Schemas } from './../middlewares/validateSchema';
 import {Router} from 'express';
 import PostController from '../controllers/PostController';
 import { authMiddleware } from '../middlewares/auth';
-import { checkRole } from '../middlewares/checkRole';
 
 const router = Router();
 

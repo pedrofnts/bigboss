@@ -5,7 +5,12 @@ declare global {
   namespace Express {
     export interface Request {
       user: Partial<IUser>;
-      post: Partial<IPost>
+      post: Partial<IPost>;
+    }
+  }
+  namespace NodeJS {
+    export interface Global {
+      __MONGO_URI__: string;
     }
   }
 }
