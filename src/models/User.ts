@@ -1,4 +1,4 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import mongoose, { Document, Schema } from "mongoose";
 
 export interface IUser {
   name: string;
@@ -10,33 +10,30 @@ export interface IUser {
 }
 
 export interface IAddress {
-  street: string;
-  number: string;
   city: string;
   state: string;
-  country: string;
 }
 
 export interface UserDocument extends IUser, Document {
-  _doc: { [x: string]: unknown; password: unknown; }
+  _doc: { [x: string]: unknown; password: unknown };
   updatedAt: Date;
   createdAt: Date;
 }
 
 const UserSchema = new Schema<UserDocument>(
-    {
-        name: { type: String, required: true },
-        nickname: { type: String, required: true },
-        email: { type: String, required: true },
-        password: { type: String, required: true },
-        role: { type: String, default: 'USER' },
-        address: { type: Object, required: true },
-    },
-    {
-        versionKey: false,
-        timestamps: true,
-    }
+  {
+    name: { type: String, required: true },
+    nickname: { type: String, required: true },
+    email: { type: String, required: true },
+    password: { type: String, required: true },
+    role: { type: String, default: "USER" },
+    address: { type: Object, required: true },
+  },
+  {
+    versionKey: false,
+    timestamps: true,
+  }
 );
 
-const userModel = mongoose.model('User', UserSchema);
+const userModel = mongoose.model("User", UserSchema);
 export default userModel;
