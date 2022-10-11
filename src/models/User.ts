@@ -5,6 +5,7 @@ export interface IUser {
   nickname: string;
   email: string;
   password: string;
+  gender: string;
   role: string;
   address: IAddress;
 }
@@ -26,6 +27,7 @@ const UserSchema = new Schema<UserDocument>(
     nickname: { type: String, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
+    gender: { type: String, required: true },
     role: { type: String, default: "USER" },
     address: { type: Object, required: true },
   },

@@ -5,7 +5,7 @@ import bcrypt from "bcrypt";
 
 export default class UserController {
   static async createUser(req: Request, res: Response) {
-    const { name, nickname, email, password, address, role } = req.body;
+    const { name, nickname, email, password, gender, address } = req.body;
 
     const userExists = await User.findOne({ email });
     if (userExists) {
@@ -19,6 +19,7 @@ export default class UserController {
       nickname,
       email,
       password: hashPassword,
+      gender,
       address,
     });
 
