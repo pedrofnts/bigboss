@@ -1,11 +1,12 @@
-import userModel, { IUser, UserDocument } from "./../models/User";
 import { Request, Response } from "express";
 import User from "../models/User";
 import bcrypt from "bcrypt";
 
+
 export default class UserController {
+
   static async createUser(req: Request, res: Response) {
-    const { name, nickname, email, password, gender, address } = req.body;
+    const { name, nickname, email, password, gender, birthDate, address } = req.body;
 
     const userExists = await User.findOne({ email });
     if (userExists) {
@@ -20,6 +21,7 @@ export default class UserController {
       email,
       password: hashPassword,
       gender,
+      birthDate,
       address,
     });
 

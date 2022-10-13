@@ -12,7 +12,9 @@
       "./custom_typings",
       "./@types",
       "./node_modules/@types"
-    ]
+    ],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "include": [
     "src/**/*"

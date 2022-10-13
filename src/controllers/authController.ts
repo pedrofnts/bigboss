@@ -2,10 +2,12 @@ import { Request, Response } from 'express';
 import User, { IUser } from '../models/User';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import userModel from '../models/User';
+import {Get, Route, Post} from 'tsoa';
 
+@Route("auth")
 export default class AuthController {
 
+    @Post('/login')
     static login (req: Request, res: Response) {
 
         const { email, password } = req.body;
@@ -41,6 +43,7 @@ export default class AuthController {
             });
     }
 
+    @Get('/profile')
     static getProfile (req: Request, res: Response) {
         const user = req.user;
 

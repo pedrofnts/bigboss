@@ -55,6 +55,7 @@ export const Schemas = {
       email: Joi.string().email().required(),
       password: Joi.string().required(),
       gender: Joi.string().required(),
+      birthDate: Joi.date().required(),
       role: Joi.string().valid("user").required(),
       address: Joi.object({
         city: Joi.string().required(),
@@ -71,7 +72,9 @@ export const Schemas = {
       password: Joi.string()
         .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))
         .required(),
-      role: Joi.string().valid("user").required(),
+      role: Joi.string().valid("user"),
+      gender: Joi.string().required(),
+      birthDate: Joi.date().required(),
       address: Joi.object({
         city: Joi.string().required(),
         state: Joi.string()
