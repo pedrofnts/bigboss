@@ -20,18 +20,17 @@ describe('User Model Testing', () => {
         nickname: faker.name.suffix(),
         email: faker.internet.email(),
         password: faker.internet.password(),
+        gender: 'masculino',
+        birthDate: faker.date.birthdate(),
         role: 'user',
         address: {
-            street: faker.address.street(),
-            number: faker.random.numeric(),
             city: faker.address.cityName(),
             state: faker.address.stateAbbr(),
-            country: faker.address.countryCode()
         }
     };
 
     const user = new userModel({ ...userInput });
-    
+
 
     it('Should create a User', async () => {
 
@@ -46,7 +45,7 @@ describe('User Model Testing', () => {
         expect(createUser.address).toStrictEqual(user.address);
     });
 
-    it('Should get all users' , async() => {
+    it('Should get all users', async () => {
         await user.save();
 
         const users = await userModel.find();
@@ -58,7 +57,7 @@ describe('User Model Testing', () => {
 
         await user.save();
         const fetchedUser = await userModel.findOne({ _id: user._id });
-        
+
         expect(fetchedUser).toBeDefined();
         expect(fetchedUser).toMatchObject(userInput);
     });
@@ -70,28 +69,27 @@ describe('User Model Testing', () => {
             nickname: faker.name.suffix(),
             email: faker.internet.email(),
             password: faker.internet.password(),
+            gender: 'masculino',
+            birthDate: faker.date.birthdate(),
             role: 'user',
             address: {
-                street: faker.address.street(),
-                number: faker.random.numeric(),
                 city: faker.address.cityName(),
                 state: faker.address.stateAbbr(),
-                country: faker.address.countryCode()
             }
         };
 
-        await userModel.updateOne({_id: user._id}, {...userUpdated});
+        await userModel.updateOne({ _id: user._id }, { ...userUpdated });
         const fecthedUser = await userModel.findOne({ _id: user._id });
-      
+
         expect(fecthedUser).toBeDefined();
         expect(fecthedUser).toMatchObject(userUpdated);
         expect(fecthedUser).not.toMatchObject(userInput);
     });
 
     it('Should delete user', async () => {
-        await userModel.deleteOne({_id: user._id});
+        await userModel.deleteOne({ _id: user._id });
 
-        const fetchedUser = await userModel.findOne({_id: user._id});
+        const fetchedUser = await userModel.findOne({ _id: user._id });
 
         expect(fetchedUser).toBeNull();
     });
