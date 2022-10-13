@@ -54,8 +54,10 @@ export const Schemas = {
       nickname: Joi.string().alphanum().min(3).max(10).required(),
       email: Joi.string().email().required(),
       password: Joi.string().required(),
-      gender: Joi.string().required(),
-      birthDate: Joi.date().required(),
+      gender: Joi.string()
+      .valid("Masculino", "Feminino", "Prefiro não Informar")
+      .required(),
+      birthDate: Joi.date().min("1920-01-01").max(Date.now()).required(),
       role: Joi.string().valid("user").required(),
       address: Joi.object({
         city: Joi.string().required(),

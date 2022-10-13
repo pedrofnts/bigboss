@@ -6,12 +6,13 @@ import bcrypt from "bcrypt";
 export default class UserController {
 
   static async createUser(req: Request, res: Response) {
-    const { name, nickname, email, password, gender, birthDate, address } = req.body;
+    let { name, nickname, email, password, gender, birthDate, address } = req.body;
 
     const userExists = await User.findOne({ email });
     if (userExists) {
       return res.status(409).json({ message: "Usuário já cadastrado" });
     }
+    console.log(birthDate);
 
     const hashPassword = bcrypt.hashSync(password, 10);
 
