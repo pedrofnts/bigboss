@@ -1,11 +1,8 @@
 import { Request, Response } from 'express';
-import {Get, Route, Post as PostTsoa, Delete, Put} from 'tsoa';
 import Post from '../models/Post'
 
-Route('post')
 export default class PostController {
 
-    @PostTsoa('/post')
     static async createPost(req: Request, res: Response) {
         try {
             const body = req.body;
@@ -36,7 +33,6 @@ export default class PostController {
         }
     }
 
-    @Get('/post/:postId')
     static readPost(req: Request, res: Response) {
         const postId = req.params.postId;
 
@@ -60,7 +56,6 @@ export default class PostController {
             });
     }
 
-    @Get('/feed')
     static readAllPosts(req: Request, res: Response) {
         return Post.find()
             .populate('user', 'name nickname address.city address.state')
@@ -78,7 +73,6 @@ export default class PostController {
             });
     }
 
-    @Put('/post/:postId')
     static async updatePosts(req: Request, res: Response) {
 
         const post = req;
@@ -106,7 +100,6 @@ export default class PostController {
         }
     }
 
-    @Delete('/post')
     static async deletePost(req: Request, res: Response) {
         const post = req;
 

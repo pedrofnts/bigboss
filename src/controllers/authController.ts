@@ -25,7 +25,7 @@ export default class AuthController {
                     expiresIn: 86400,
                 });
 
-                return res.status(200).send({ id: user._id, name: user.name, email, auth: true, token });
+                return res.status(200).send({ id: user._id, name: user.name, nickname: user.nickname , email, auth: true, token });
             }
 
             return res.status(401).json({ message: "Email ou senha inválidos" })
