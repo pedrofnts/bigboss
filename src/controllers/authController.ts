@@ -1,50 +1,49 @@
+import { IUser } from './../models/User';
 import { Request, Response } from 'express';
-import User, { IUser } from '../models/User';
+import User from '../models/User';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import {Get, Route, Post} from 'tsoa';
 
-@Route("auth")
+
 export default class AuthController {
 
-    @Post('/login')
-    static login (req: Request, res: Response) {
+    static async login(req: Request, res: Response) {
 
         const { email, password } = req.body;
 
-        User.findOne({ email })
-            .then((user) => {
-                if (user) {
-                    const passwordIsValid = bcrypt.compareSync(password, user.password);
+        try {
+            const user = await User.findOne({ email })
 
-                    if (passwordIsValid) {
-                        const token = jwt.sign({ id: user._id }, process.env.JWT_PASS ?? '', {
-                            expiresIn: 86400,
-                        });
+            if (!user) {
+                return res.status(404).json({ message: "Usuário não encontrado" })
+            }
+        
+            const passwordIsValid = bcrypt.compareSync(password, user.password);
 
-                        res.status(200).send({ auth: true, token });
-                    } else {
-                        res.status(401).send({ auth: false, token: null });
-                    }
-                } else {
-                    res.status(404).send('Usuário não encontrado');
-                }
-            })
-            .catch((error: unknown) => {
+            if (passwordIsValid) {
+                const token = jwt.sign({ id: user._id }, process.env.JWT_PASS ?? '', {
+                    expiresIn: 86400,
+                });
 
-                let message;
-                if (error instanceof Error) {
-                    message = error.message;
-                } else {
-                    message = error;
-                }
+                return res.status(200).send({ id: user._id, name: user.name, email, auth: true, token });
+            }
 
-                return res.status(500).json({ message });
-            });
+            return res.status(401).json({ message: "Email ou senha inválidos" })
+
+        } catch (error: unknown) {
+            let message;
+            if (error instanceof Error) {
+                message = error.message;
+            } else {
+                message = error;
+            }
+
+            res.status(500).json({ message });
+        };
+
     }
 
-    @Get('/profile')
-    static getProfile (req: Request, res: Response) {
+    static getProfile(req: Request, res: Response) {
         const user = req.user;
 
         res.status(200).send(user);
