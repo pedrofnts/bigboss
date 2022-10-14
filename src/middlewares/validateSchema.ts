@@ -55,10 +55,9 @@ export const Schemas = {
       email: Joi.string().email().required(),
       password: Joi.string().required(),
       gender: Joi.string()
-      .valid("Masculino", "Feminino", "Prefiro não Informar")
-      .required(),
+        .valid("Masculino", "Feminino", "Prefiro não Informar")
+        .required(),
       birthDate: Joi.date().min("1920-01-01").max(Date.now()).required(),
-      role: Joi.string().valid("user").required(),
       address: Joi.object({
         city: Joi.string().required(),
         state: Joi.string()
@@ -74,7 +73,6 @@ export const Schemas = {
       password: Joi.string()
         .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))
         .required(),
-      role: Joi.string().valid("user"),
       gender: Joi.string().required(),
       birthDate: Joi.date().required(),
       address: Joi.object({
@@ -88,12 +86,6 @@ export const Schemas = {
 
   post: {
     create: Joi.object<IPost>({
-      category: Joi.string()
-        .valid("Esportes", "Filmes e Séries", "Desenhos Animados")
-        .required(),
-      album: Joi.string().required(),
-      year: Joi.number().required(),
-      title: Joi.string().required(),
       description: Joi.string().required(),
       assets: Joi.object({
         offer: Joi.array().items(Joi.string().min(1).max(6)).required(),
@@ -102,10 +94,6 @@ export const Schemas = {
     }),
 
     update: Joi.object<IPost>({
-      category: Joi.string().required(),
-      album: Joi.string().required(),
-      year: Joi.number().required(),
-      title: Joi.string().required(),
       description: Joi.string().required(),
       assets: Joi.object({
         offer: Joi.array().items(Joi.string()).required(),
