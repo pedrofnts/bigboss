@@ -84,12 +84,6 @@ export const Schemas = {
 
   post: {
     create: Joi.object<IPost>({
-      category: Joi.string()
-        .valid("Esportes", "Filmes e Séries", "Desenhos Animados")
-        .required(),
-      album: Joi.string().required(),
-      year: Joi.number().required(),
-      title: Joi.string().required(),
       description: Joi.string().required(),
       assets: Joi.object({
         offer: Joi.array().items(Joi.string().min(1).max(6)).required(),
@@ -98,10 +92,6 @@ export const Schemas = {
     }),
 
     update: Joi.object<IPost>({
-      category: Joi.string().required(),
-      album: Joi.string().required(),
-      year: Joi.number().required(),
-      title: Joi.string().required(),
       description: Joi.string().required(),
       assets: Joi.object({
         offer: Joi.array().items(Joi.string()).required(),

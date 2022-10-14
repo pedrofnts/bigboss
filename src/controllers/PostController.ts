@@ -11,10 +11,6 @@ export default class PostController {
       const user = req.user;
 
       const post = new Post({
-        category: body.category,
-        album: body.album,
-        year: body.year,
-        title: body.title,
         description: body.description,
         assets: body.assets,
         user: user._id,
