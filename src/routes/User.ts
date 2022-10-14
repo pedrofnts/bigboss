@@ -7,11 +7,7 @@ const router = express.Router();
 
 // Não autenticada
 
-router.post(
-  "/user",
-  validateSchema(Schemas.user.create),
-  UserController.createUser
-); // Cadastro de Usuário
+router.post("/signup/user", UserController.createUser); // Cadastro de Usuário
 
 // Com autenticação
 
