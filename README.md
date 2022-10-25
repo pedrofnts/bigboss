@@ -6,8 +6,7 @@
 <h1 align="center">Cola Aí</h1>
 
 <p align="center">This project consists of a social network to exchange stickers.</p>
-<p align="center"><a href="https://insomnia.rest/run/?label=La%20Vie%20API&uri=https%3A%2F%2Fraw.githubusercontent.com%2Fpedrofnts%2Fla-vie%2Fmain%2Fdocs%2Finsomnia.json" target="_blank"><img src="https://insomnia.rest/images/run.svg" alt="Run in Insomnia"></a>
-</a></p>
+
 
 ## Techs
 
